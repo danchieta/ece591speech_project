@@ -1,29 +1,20 @@
-input_dir = '../id10157/31g1Oo0Ih-A/';
-input_file = '00002.wav';
+input_dir = '../id10166/8h57d48MzGw/';
+input_file = '00004.wav';
 
 [x.sound, x.fs] = audioread([input_dir input_file]);
 
 % sound(x.sound, x.fs)
 
+% durations in seconds
 win_duration = 30e-3;
 overlap_duration = 10e-3;
-winlen = ceil(win_duration*x.fs); % window length in number of samples
-step = ceil((win_duration - overlap_duration)*x.fs); % overlap in number of samples
 
-window = hamming(winlen);
+x.overlap_matrix = make_snaps(x, win_duration, overlap_duration, 'hamming');
 
-x.overlap_matrix = overlap(x.sound, window, step);
-
-x.energy = sum(x.overlap_matrix.^2);
-
-ind_highenergy = find(x.energy/max(x.energy) > 0.12);
-x.snaps_highenergy = x.overlap_matrix(:,ind_highenergy);
-
+[x.snaps_highenergy, x.energy, index] = high_energy_snaps(x.overlap_matrix, 0.22);
 % sound(x.snaps_highenergy(:),x.fs);
 
-nfft = 2^ceil(log2(winlen));
-x.spectrum_ofhigh = fft(x.snaps_highenergy,nfft);
-x.spectrum_ofhigh = abs(x.spectrum_ofhigh(1:nfft/2,:)).^2;
+x.spectrum_ofhigh = power_spectrum(x.snaps_highenergy);
 
 f_index = linspace(0, x.fs/2, nfft/2);
 f_mel_index = 1000*log2(1 + f_index/1000);
@@ -43,7 +34,7 @@ end
 x.log_spectrum = log(x.smooth_spectrum);
 [K, N] = size(x.log_spectrum);
 
-ncepstrum = 50;
+ncepstrum = 100;
 
 n = (1:ncepstrum)';
 k = (1:K);
@@ -52,8 +43,9 @@ W = cos(n.*(k-.5)*pi/K);
 
 x.cepstrum_coef = W*x.log_spectrum;
 x.cepstrum_coef_centr = x.cepstrum_coef-mean(x.cepstrum_coef,2);
+x.cepstrum_coef_centr = x.cepstrum_coef./var(x.cepstrum_coef,0,2);
 
-col = 50;
+col = 27;
 figure(1)
 subplot(211)
 plot(10*log10(abs(x.spectrum_ofhigh(:,col))))
@@ -63,5 +55,14 @@ plot(10*log10(abs(x.smooth_spectrum(:,col))))
 figure(2)
 for l = 1:5
 	subplot(510 +l)
+	plot(x.cepstrum_coef(:,5+l))
+end
+
+figure(3)
+for l = 1:5
+	subplot(510 +l)
 	plot(x.cepstrum_coef_centr(:,5+l))
 end
+
+ceps_center_coef = x.cepstrum_coef_centr;
+save('unrolled_feature.mat','x');
