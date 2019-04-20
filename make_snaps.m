@@ -15,7 +15,7 @@ function [X center_time] = make_snaps(x, win_duration, overlap_duration, wintype
 		window = hanning(rectwin);
 	end
 
-	window = window/sum(window);
+	% window = window/sum(window);
 
 	X = overlap(x.sound, window, step);
 

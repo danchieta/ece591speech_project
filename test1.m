@@ -3,7 +3,7 @@ input_file = '00004.wav';
 
 [x.sound, x.fs] = audioread([input_dir input_file]);
 
-% sound(x.sound, x.fs)
+sound(x.sound, x.fs)
 
 % durations in seconds
 win_duration = 30e-3;
@@ -16,15 +16,12 @@ x.overlap_matrix = make_snaps(x, win_duration, overlap_duration, 'hamming');
 
 x.spectrum_ofhigh = power_spectrum(x.snaps_highenergy);
 
-f_index = linspace(0, x.fs/2, nfft/2);
-f_mel_index = 1000*log2(1 + f_index/1000);
 
-smooth_win_len = 25;
-win1 = bartlett(smooth_win_len); % window for smoothing the spectrum
-win1 = win1/sum(win1);
+smooth_nwin = 50;
+f_index = linspace(0,x.fs/2,256);
 
-[M, K] = size(x.spectrum_ofhigh);
-x.smooth_spectrum = zeros(M-smooth_win_len+1, K);
+x.smooth_spectrum = mel_filterbank(x.spectrum_ofhigh, f_index,smooth_nwin)
+
 
 for k=1:K
 	x.smooth_spectrum(:,k) = conv(x.spectrum_ofhigh(:,k), win1, 'valid');
