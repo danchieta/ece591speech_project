@@ -1,4 +1,4 @@
-function [x] = mel_filterbank(input_spectrum, f_index, nfilter)
+function [x findex_out] = mel_filterbank(input_spectrum, f_index, nfilter)
 
 
 % this is the triangular function in a _clever_ way to do piecewise functions
@@ -7,8 +7,9 @@ function [x] = mel_filterbank(input_spectrum, f_index, nfilter)
 % the triangular function middle and right and left boundaries
 % the boundaries are relative to the middle 
 % e.g. f(x) will be 0 for (x-mid)<left
-f_trng = @(x,left,right,mid) (-(x-mid)./left+1).*((x-mid)>left).*((x-mid)<=0)...
-	+(-(x-mid)./right+1).*((x-mid)>0).*((x-mid)<=right);
+
+f_trng = @(x,left,right,mid) ((-(x-mid)./left+1).*((x-mid)>left).*((x-mid)<=0)...
+	+(-(x-mid)./right+1).*((x-mid)>0).*((x-mid)<=right))./(right-left)*2;
 
 f2mel = @(f) 2595*log10(1+f/700);
 mel2f = @(mel) 700*(10.^(mel/2595)-1);
@@ -23,13 +24,15 @@ step = (fmel_max - fmel_min)/(nfilter+1);
 
 
 filter_left = mel2f((0:nfilter-1)*step);
+filter_mid = mel2f(step+(0:nfilter-1)*step);
 filter_right = mel2f(2*step+(0:nfilter-1)*step);
 
-filter_mid = (filter_left+filter_right)/2;
+% filter_mid = (filter_left+filter_right)/2;
 
 H = f_trng(f_index,filter_left'-filter_mid', filter_right'-filter_mid',...
 	filter_mid');
 
 x = H*input_spectrum;
+findex_out = filter_mid;
 
 end
