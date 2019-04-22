@@ -11,5 +11,5 @@ function [coefs, centr_coefs] = mel_cepstrum(spectrum, ncepstrum)
 	W = cos(n.*(k-.5)*pi/K);
 
 	coefs = W*log_spectrum;
-	centr_coefs = (coefs - mean(coefs,2))./var(coefs,0,2);
+	centr_coefs = (coefs - mean(coefs,2))./std(coefs,0,2);
 end
