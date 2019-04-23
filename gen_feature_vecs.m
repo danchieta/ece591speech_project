@@ -54,32 +54,33 @@ input_file41 = 'ulWgb-KmVeg/00005.wav';
 % duration in seconds
 win_duration = 30e-3;
 overlap_duration = 10e-3;
+nfft = 2048;
 % number of windows in mel filterbank
-smooth_nwin = 20;
+smooth_nwin = 256;
 % number of cepstrum coefficients
-ncepstrum = 200;
+ncepstrum = 128;
 
-chris1 = cepstral_analysis(chris1, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-chris2 = cepstral_analysis(chris2, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-chris3 = cepstral_analysis(chris3, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-chris4 = cepstral_analysis(chris4, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-chris5 = cepstral_analysis(chris5, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-chris6 = cepstral_analysis(chris5, win_duration, overlap_duration, smooth_nwin, ncepstrum);
+chris1 = cepstral_analysis(chris1, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+chris2 = cepstral_analysis(chris2, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+chris3 = cepstral_analysis(chris3, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+chris4 = cepstral_analysis(chris4, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+chris5 = cepstral_analysis(chris5, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+chris6 = cepstral_analysis(chris6, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
 
-cillian1 = cepstral_analysis(cillian1, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-cillian2 = cepstral_analysis(cillian2, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-cillian3 = cepstral_analysis(cillian3, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-cillian4 = cepstral_analysis(cillian4, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-cillian5 = cepstral_analysis(cillian5, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-cillian6 = cepstral_analysis(cillian6, win_duration, overlap_duration, smooth_nwin, ncepstrum);
+cillian1 = cepstral_analysis(cillian1, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+cillian2 = cepstral_analysis(cillian2, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+cillian3 = cepstral_analysis(cillian3, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+cillian4 = cepstral_analysis(cillian4, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+cillian5 = cepstral_analysis(cillian5, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+cillian6 = cepstral_analysis(cillian6, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
 
-tilda1 = cepstral_analysis(tilda1, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-tilda2 = cepstral_analysis(tilda2, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-tilda3 = cepstral_analysis(tilda3, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-tilda4 = cepstral_analysis(tilda4, win_duration, overlap_duration, smooth_nwin, ncepstrum);
-tilda5 = cepstral_analysis(tilda5, win_duration, overlap_duration, smooth_nwin, ncepstrum);
+tilda1 = cepstral_analysis(tilda1, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+tilda2 = cepstral_analysis(tilda2, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+tilda3 = cepstral_analysis(tilda3, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+tilda4 = cepstral_analysis(tilda4, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
+tilda5 = cepstral_analysis(tilda5, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
 
-jesse1 = cepstral_analysis(jesse1, win_duration, overlap_duration, smooth_nwin, ncepstrum);
+jesse1 = cepstral_analysis(jesse1, win_duration, overlap_duration, nfft, smooth_nwin, ncepstrum);
 
 M_enrolled_train = [chris1.cepstrum_coef_centr,...
 				    chris2.cepstrum_coef_centr,...
@@ -117,8 +118,8 @@ M_unenrolled_test= [zeros(1,ncol); M_unenrolled_test];
 
 csvwrite('sets/train_set.csv', [M_enrolled_train M_unenrolled_train])
 csvwrite('sets/test_set.csv', [M_enrolled_test M_unenrolled_test])
-csvwrite('sets/cillian_test.csv', cillian2.cepstrum_coef_centr)
-csvwrite('sets/chris_test.csv', chris4.cepstrum_coef_centr)
+csvwrite('sets/cillian_test.csv', cillian6.cepstrum_coef_centr)
+csvwrite('sets/chris_test.csv', chris5.cepstrum_coef_centr)
 csvwrite('sets/chris_test2.csv', chris6.cepstrum_coef_centr)
 csvwrite('sets/tilda_test.csv', tilda4.cepstrum_coef_centr)
 csvwrite('sets/jesse_test.csv', jesse1.cepstrum_coef_centr)

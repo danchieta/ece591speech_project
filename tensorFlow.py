@@ -17,7 +17,7 @@ test_set = test[:,1:];
 
 model = tf.keras.Sequential([
 # Adds a densely-connected layer with 64 units to the model:
-layers.Dense(64, activation='relu', input_shape=(train_set.shape[1],)),
+layers.Dense(64, activation='sigmoid', input_shape=(train_set.shape[1],)),
 # Add another:
 layers.Dense(128,activation='relu'),
 # Add a softmax layer with 10 output units:
@@ -36,21 +36,25 @@ s = np.sum(test_set_labels, axis=0)
 
 pred = model.predict(test_set, batch_size=1)
 
+print('\n\nEnrolled speaker')
+print('================')
 test_chris = np.genfromtxt('sets/chris_test.csv', delimiter=',').T
 pred_chris = model.predict(test_chris, batch_size=1)
-print('\n\nChris Martin\'s speech:')
+print('\nChris Martin\'s speech:')
 print('Probability of acceptance:\t'+str(np.mean(pred_chris, axis=0)[0]))
 print('Probability of rejection:\t'+str(np.mean(pred_chris, axis=0)[1]))
 
 test_chris2 = np.genfromtxt('sets/chris_test2.csv', delimiter=',').T
-pred_chris = model.predict(test_chris, batch_size=1)
+pred_chris2 = model.predict(test_chris2, batch_size=1)
 print('\n\nChris Martin\'s speech 2:')
-print('Probability of acceptance:\t'+str(np.mean(pred_chris, axis=0)[0]))
-print('Probability of rejection:\t'+str(np.mean(pred_chris, axis=0)[1]))
+print('Probability of acceptance:\t'+str(np.mean(pred_chris2, axis=0)[0]))
+print('Probability of rejection:\t'+str(np.mean(pred_chris2, axis=0)[1]))
 
+print('\n\nUnnrolled speaker')
+print('================')
 test_cillian = np.genfromtxt('sets/cillian_test.csv', delimiter=',').T
 pred_cillian = model.predict(test_cillian, batch_size=1)
-print('\n\nCillian Murphy\'s speech:')
+print('\nCillian Murphy\'s speech:')
 print('Probability of acceptance:\t'+str(np.mean(pred_cillian, axis=0)[0]))
 print('Probability of rejection:\t'+str(np.mean(pred_cillian, axis=0)[1]))
 
