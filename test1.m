@@ -9,14 +9,14 @@ input_file = '00002.wav';
 [x.sound, x.fs] = audioread([input_dir input_file]);
 % sound(x.sound, x.fs)
 
-% durations in seconds
+% duration in seconds
 win_duration = 30e-3;
 overlap_duration = 10e-3;
-% number of windows in mel filterbank
 nfft = 2048;
-smooth_nwin = 128;
+% number of windows in mel filterbank
+smooth_nwin = 256;
 % number of cepstrum coefficients
-ncepstrum = 64;
+ncepstrum = 128;
 % energy threshold relative to median
 % energy_threshold = 1.5;
 
